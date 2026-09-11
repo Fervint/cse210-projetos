@@ -44,6 +44,6 @@ class Program
     static void ExibirResultado(string nome, int quadrado)
     {
         Console.WriteLine($"{nome}, o quadrado do seu número é {quadrado}");
-    
-}
+
+    }
 }
