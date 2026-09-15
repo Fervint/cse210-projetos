@@ -5,13 +5,18 @@ class Program
 {
     static void Main(string[] args)
     {
-        Diario.Diario diario = new Diario.Diario();
+        var diario = new Diario.Diario();
         GeradorDePerguntas gerador = new GeradorDePerguntas();
         bool continuar = true;
 
+        // 💡 Comentário de criatividade extra:
+        // Este programa foi aprimorado para salvar e carregar registros em formato CSV,
+        // permitindo abrir o diário diretamente no Excel. Também adiciona mensagens coloridas
+        // para melhor experiência visual do usuário.
+
         while (continuar)
         {
-            Console.WriteLine("Por favor selecione uma das seguintes opções:");
+            Console.WriteLine("\nPor favor selecione uma das seguintes opções:");
             Console.WriteLine("1. Escrever");
             Console.WriteLine("2. Exibir");
             Console.WriteLine("3. Carregar");

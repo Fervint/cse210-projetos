@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
 namespace Diario
 {
@@ -27,18 +26,29 @@ namespace Diario
 
             foreach (Registro registro in _registros)
             {
-                registro.Exibir(); // ✅ Chama o método da classe Registro
-                Console.WriteLine(); // Linha em branco para separar
+                registro.Exibir();
+                Console.WriteLine();
             }
         }
 
+        // 🔹 Salvar em formato CSV
         public void SalvarNoArquivo(string arquivo)
         {
-            string conteudo = JsonSerializer.Serialize(_registros, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(arquivo, conteudo);
-            Console.WriteLine($"Diário salvo em: {Path.GetFullPath(arquivo)}");
+            using (StreamWriter escritor = new StreamWriter(arquivo))
+            {
+                escritor.WriteLine("Data,Pergunta,Resposta");
+                foreach (Registro registro in _registros)
+                {
+                    string linha = $"\"{registro._data}\",\"{registro._textoPergunta}\",\"{registro._textoResposta}\"";
+                    escritor.WriteLine(linha);
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"✅ Diário salvo com sucesso em: {Path.GetFullPath(arquivo)}");
+            Console.ResetColor();
         }
 
+        // 🔹 Carregar do formato CSV
         public void CarregarDoArquivo(string arquivo)
         {
             if (!File.Exists(arquivo))
@@ -47,9 +57,27 @@ namespace Diario
                 return;
             }
 
-            string conteudo = File.ReadAllText(arquivo);
-            _registros = JsonSerializer.Deserialize<List<Registro>>(conteudo) ?? new List<Registro>();
-            Console.WriteLine("Diário carregado com sucesso!");
+            string[] linhas = File.ReadAllLines(arquivo);
+            _registros.Clear();
+
+            for (int i = 1; i < linhas.Length; i++) // Ignora o cabeçalho
+            {
+                string[] partes = linhas[i].Split("\",\"");
+                if (partes.Length == 3)
+                {
+                    Registro registro = new Registro
+                    {
+                        _data = partes[0].Trim('"'),
+                        _textoPergunta = partes[1].Trim('"'),
+                        _textoResposta = partes[2].Trim('"')
+                    };
+                    _registros.Add(registro);
+                }
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("📂 Diário carregado com sucesso!");
+            Console.ResetColor();
         }
     }
 }
