@@ -6,11 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Diario.cs" />
-    <Compile Include="Registro.cs" />
-    <Compile Include="GeradorDePerguntas.cs" />
-  </ItemGroup>
 </Project>

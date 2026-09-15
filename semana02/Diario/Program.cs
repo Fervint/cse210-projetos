@@ -1,10 +1,11 @@
 using System;
+using Diario;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Diario diario = new Diario();
+        Diario.Diario diario = new Diario.Diario();
         GeradorDePerguntas gerador = new GeradorDePerguntas();
         bool continuar = true;
 
@@ -22,10 +23,12 @@ class Program
             switch (opcao)
             {
                 case "1":
-                    Registro registro = new Registro();
-                    registro._data = DateTime.Now.ToShortDateString();
-                    registro._textoPergunta = gerador.ObterPerguntaAleatoria();
-                    Console.WriteLine($"Pergunta: {registro._textoPergunta}");
+                    Registro registro = new Registro
+                    {
+                        _data = DateTime.Now.ToShortDateString(),
+                        _textoPergunta = gerador.ObterPerguntaAleatoria()
+                    };
+                    Console.WriteLine($"Data: {registro._data} - Pergunta: {registro._textoPergunta}");
                     Console.Write("Resposta: ");
                     registro._textoResposta = Console.ReadLine();
                     diario.AdicionarRegistro(registro);
@@ -37,14 +40,12 @@ class Program
 
                 case "3":
                     Console.Write("Qual é o nome do arquivo? ");
-                    string arquivoCarregar = Console.ReadLine();
-                    diario.CarregarDoArquivo(arquivoCarregar);
+                    diario.CarregarDoArquivo(Console.ReadLine());
                     break;
 
                 case "4":
                     Console.Write("Qual é o nome do arquivo? ");
-                    string arquivoSalvar = Console.ReadLine();
-                    diario.SalvarNoArquivo(arquivoSalvar);
+                    diario.SalvarNoArquivo(Console.ReadLine());
                     break;
 
                 case "5":
@@ -52,7 +53,7 @@ class Program
                     break;
 
                 default:
-                    Console.WriteLine("Opção inválida. Tente novamente.");
+                    Console.WriteLine("Opção inválida.");
                     break;
             }
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class GeradorDePerguntas
 {
-    public List<string> _perguntas = new List<string>
+    private readonly List<string> _perguntas = new()
     {
         "Quem foi a pessoa mais interessante com quem interagi hoje?",
         "Qual foi a melhor parte do meu dia?",
@@ -14,8 +14,8 @@ public class GeradorDePerguntas
 
     public string ObterPerguntaAleatoria()
     {
-        Random random = new Random();
-        int indice = random.Next(_perguntas.Count);
+        Random aleatorio = new();
+        int indice = aleatorio.Next(_perguntas.Count);
         return _perguntas[indice];
     }
 }

@@ -1,15 +1,17 @@
 using System;
 
-public class Registro
+namespace Diario
 {
-    public string _data;
-    public string _textoPergunta;
-    public string _textoResposta;
-
-    public void Exibir()
+    public class Registro
     {
-        Console.WriteLine($"Data: {_data} - Pergunta: {_textoPergunta}");
-        Console.WriteLine(_textoResposta);
-        Console.WriteLine();
+        public string _data { get; set; }
+        public string _textoPergunta { get; set; }
+        public string _textoResposta { get; set; }
+
+        public void Exibir()
+        {
+            Console.WriteLine($"Data: {_data} - Pergunta: {_textoPergunta}");
+            Console.WriteLine($"Resposta: {_textoResposta}");
+        }
     }
 }

@@ -1,73 +1,55 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
-public class Diario
+namespace Diario
 {
-    public List<Registro> _registros = new List<Registro>();
-
-    public void AdicionarRegistro(Registro novoRegistro)
+    public class Diario
     {
-        _registros.Add(novoRegistro);
-    }
+        public List<Registro> _registros { get; private set; } = new List<Registro>();
 
-    public void ExibirTodos()
-    {
-        foreach (Registro registro in _registros)
+        public void AdicionarRegistro(Registro novoRegistro)
         {
-            registro.Exibir();
+            if (novoRegistro == null)
+                throw new ArgumentNullException(nameof(novoRegistro));
+
+            _registros.Add(novoRegistro);
         }
-    }
 
-    public void SalvarNoArquivo(string arquivo)
-    {
-        string caminhoCompleto = Path.Combine(Environment.CurrentDirectory, arquivo);
-
-        using (StreamWriter saida = new StreamWriter(caminhoCompleto))
+        public void ExibirTodos()
         {
+            if (_registros.Count == 0)
+            {
+                Console.WriteLine("Nenhum registro encontrado.");
+                return;
+            }
+
             foreach (Registro registro in _registros)
             {
-                saida.WriteLine($"{registro._data}|{registro._textoPergunta}|{registro._textoResposta}");
+                registro.Exibir(); // ✅ Chama o método da classe Registro
+                Console.WriteLine(); // Linha em branco para separar
             }
         }
 
-        Console.WriteLine($"Arquivo '{arquivo}' salvo com sucesso em: {caminhoCompleto}");
-    }
-
-    public void CarregarDoArquivo(string arquivo)
-    {
-        string caminhoExecutavel = Path.Combine(Environment.CurrentDirectory, arquivo);
-        string caminhoProjeto = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "semana02", "Diario", arquivo);
-        caminhoProjeto = Path.GetFullPath(caminhoProjeto);
-
-        string caminhoFinal = File.Exists(caminhoExecutavel) ? caminhoExecutavel : caminhoProjeto;
-
-        if (File.Exists(caminhoFinal))
+        public void SalvarNoArquivo(string arquivo)
         {
-            string[] linhas = File.ReadAllLines(caminhoFinal);
-            _registros.Clear();
+            string conteudo = JsonSerializer.Serialize(_registros, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(arquivo, conteudo);
+            Console.WriteLine($"Diário salvo em: {Path.GetFullPath(arquivo)}");
+        }
 
-            foreach (string linha in linhas)
+        public void CarregarDoArquivo(string arquivo)
+        {
+            if (!File.Exists(arquivo))
             {
-                string[] partes = linha.Split('|');
-                if (partes.Length == 3)
-                {
-                    Registro registro = new Registro
-                    {
-                        _data = partes[0],
-                        _textoPergunta = partes[1],
-                        _textoResposta = partes[2]
-                    };
-                    _registros.Add(registro);
-                }
+                Console.WriteLine("Arquivo não encontrado.");
+                return;
             }
 
-            Console.WriteLine($"Arquivo '{arquivo}' carregado com sucesso!");
-        }
-        else
-        {
-            Console.WriteLine($"Arquivo '{arquivo}' não encontrado.");
-            Console.WriteLine($"Verifique se ele está em: {caminhoExecutavel} ou {caminhoProjeto}");
+            string conteudo = File.ReadAllText(arquivo);
+            _registros = JsonSerializer.Deserialize<List<Registro>>(conteudo) ?? new List<Registro>();
+            Console.WriteLine("Diário carregado com sucesso!");
         }
     }
 }
