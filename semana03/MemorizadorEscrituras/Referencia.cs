@@ -1,9 +1,3 @@
-// Classe Referencia
-// Essa classe guarda o livro, capítulo e versículo (ou intervalo de versículos) da escritura.
-// Ela tem dois construtores: um para um único versículo e outro para um intervalo.
-// Também tem um método para retornar o texto formatado da referência.
-// Fiz dessa forma para deixar o código mais flexível e seguir boas práticas de encapsulamento.
-
 class Referencia
 {
     private readonly string _livro;

@@ -1,10 +1,3 @@
-// Classe Escritura
-// Essa classe é responsável por controlar a passagem bíblica completa.
-// Ela guarda a referência e todas as palavras do texto em forma de objetos Palavra.
-// Também tem os métodos para esconder palavras aleatórias, verificar se já está tudo escondido,
-// revelar todas as palavras e exibir o texto atualizado no console.
-// Fiz dessa forma para manter o encapsulamento e deixar o código mais organizado.
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +39,16 @@ class Escritura
     public bool EstaCompletamenteEscondida()
     {
         return _palavras.All(p => p.EstaEscondida());
+    }
+
+    public int PalavrasEscondidas()
+    {
+        return _palavras.Count(p => p.EstaEscondida());
+    }
+
+    public int TotalPalavras()
+    {
+        return _palavras.Count;
     }
 
     public string ObterTexto()

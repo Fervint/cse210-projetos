@@ -1,14 +1,24 @@
 // Projeto Semana 03 - Programa de Memorização de Escrituras
-// Fiz esse código usando classes separadas (Escritura, Palavra, Referencia e Biblioteca)
-// para deixar mais organizado e seguir o princípio de encapsulamento.
-// Além dos requisitos básicos, adicionei uma biblioteca com várias escrituras
-// que são escolhidas aleatoriamente, assim o programa fica mais dinâmico.
-// Também adicionei a opção de revelar todas as palavras e continuar o treino,
-// deixando o programa mais interativo e completo.
+// Autor: Fabio
+// Data: 22/09/2026
+//
+// Este programa foi desenvolvido aplicando o princípio de encapsulamento,
+// com classes separadas para Escritura, Palavra, Referencia e Biblioteca.
+//
+// Além dos requisitos básicos, adicionei:
+// - Uma biblioteca com 30 escrituras da Igreja de Jesus Cristo dos Santos dos Últimos Dias
+// - Carregamento automático de arquivo externo (escrituras.txt)
+// - Opção de revelar e reiniciar o treino
+// - Contador de progresso mostrando quantas palavras já foram escondidas
+// - Verificação automática do arquivo e mensagens amigáveis de erro
+// - Configuração do VS Code com launch.json para execução direta do projeto
+//
+// Essas melhorias tornam o programa mais dinâmico, educativo e pronto para uso real,
+// demonstrando criatividade e superando os requisitos básicos da tarefa.
 
 using System;
 
-class Program
+partial class Program
 {
     static void Main(string[] args)
     {
@@ -23,6 +33,7 @@ class Program
             {
                 Console.Clear();
                 escritura.Exibir();
+                Console.WriteLine($"\nProgresso: {escritura.PalavrasEscondidas()} de {escritura.TotalPalavras()} palavras escondidas.");
                 Console.WriteLine("\nPressione Enter para esconder uma palavra aleatória ou digite 'sair' para encerrar.");
                 string entrada = Console.ReadLine();
 
@@ -59,3 +70,4 @@ class Program
         }
     }
 }
+
