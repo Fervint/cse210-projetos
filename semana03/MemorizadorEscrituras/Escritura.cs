@@ -6,6 +6,7 @@ class Escritura
 {
     private readonly Referencia _referencia;
     private readonly List<Palavra> _palavras;
+    private readonly Random _aleatorio = new Random();
 
     public Escritura(Referencia referencia, string texto)
     {
@@ -17,11 +18,10 @@ class Escritura
 
     public void EsconderPalavrasAleatorias(int numeroParaEsconder)
     {
-        Random aleatorio = new Random();
         var palavrasVisiveis = _palavras.Where(p => !p.EstaEscondida()).ToList();
 
         foreach (Palavra palavra in palavrasVisiveis
-            .OrderBy(_ => aleatorio.Next())
+            .OrderBy(_ => _aleatorio.Next())
             .Take(numeroParaEsconder))
         {
             palavra.Esconder();
@@ -60,4 +60,6 @@ class Escritura
     {
         Console.WriteLine($"{_referencia.ObterTexto()} {ObterTexto()}");
     }
+
+    public string ObterReferencia() => _referencia.ObterTexto();
 }

@@ -11,7 +11,6 @@ class Biblioteca
     {
         _escrituras = new List<Escritura>();
 
-        // Localiza o arquivo automaticamente
         string caminhoArquivo = LocalizarArquivo();
 
         if (caminhoArquivo == null)
@@ -23,23 +22,30 @@ class Biblioteca
             Environment.Exit(0);
         }
 
-        var linhas = File.ReadAllLines(caminhoArquivo);
-        foreach (var linha in linhas)
+        try
         {
-            var partes = linha.Split('|');
-            if (partes.Length == 4)
+            var linhas = File.ReadAllLines(caminhoArquivo);
+            foreach (var linha in linhas)
             {
-                string livro = partes[0];
-                int capitulo = int.Parse(partes[1]);
-                int versiculo = int.Parse(partes[2]);
-                string texto = partes[3];
+                var partes = linha.Split('|');
+                if (partes.Length == 4)
+                {
+                    string livro = partes[0];
+                    int capitulo = int.Parse(partes[1]);
+                    int versiculo = int.Parse(partes[2]);
+                    string texto = partes[3];
 
-                _escrituras.Add(new Escritura(new Referencia(livro, capitulo, versiculo), texto));
+                    _escrituras.Add(new Escritura(new Referencia(livro, capitulo, versiculo), texto));
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar escrituras: {ex.Message}");
+            Environment.Exit(1);
         }
     }
 
-    // Método que procura o arquivo em vários locais possíveis
     private string LocalizarArquivo()
     {
         string[] caminhosPossiveis =

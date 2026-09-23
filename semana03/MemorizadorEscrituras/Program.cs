@@ -1,20 +1,6 @@
 // Projeto Semana 03 - Programa de Memorização de Escrituras
 // Autor: Fabio
 // Data: 22/09/2026
-//
-// Este programa foi desenvolvido aplicando o princípio de encapsulamento,
-// com classes separadas para Escritura, Palavra, Referencia e Biblioteca.
-//
-// Além dos requisitos básicos, adicionei:
-// - Uma biblioteca com 30 escrituras da Igreja de Jesus Cristo dos Santos dos Últimos Dias
-// - Carregamento automático de arquivo externo (escrituras.txt)
-// - Opção de revelar e reiniciar o treino
-// - Contador de progresso mostrando quantas palavras já foram escondidas
-// - Verificação automática do arquivo e mensagens amigáveis de erro
-// - Configuração do VS Code com launch.json para execução direta do projeto
-//
-// Essas melhorias tornam o programa mais dinâmico, educativo e pronto para uso real,
-// demonstrando criatividade e superando os requisitos básicos da tarefa.
 
 using System;
 
@@ -28,6 +14,12 @@ partial class Program
         while (continuar)
         {
             Escritura escritura = biblioteca.EscolherAleatoria();
+
+            Console.Clear();
+            Console.WriteLine("Nova escritura selecionada:\n");
+            escritura.Exibir();
+            Console.WriteLine("\nPressione Enter para começar a esconder palavras...");
+            Console.ReadLine();
 
             while (!escritura.EstaCompletamenteEscondida())
             {
@@ -49,6 +41,7 @@ partial class Program
             if (!continuar) break;
 
             Console.Clear();
+            Console.WriteLine($"\nReferência: {escritura.ObterReferencia()}");
             escritura.Exibir();
             Console.WriteLine("\nTodas as palavras foram escondidas!");
             Console.WriteLine("\nDeseja revelar as palavras e continuar com a mesma escritura? (s/n)");
@@ -66,8 +59,9 @@ partial class Program
             {
                 continuar = false;
                 Console.WriteLine("\nPrograma encerrado. Obrigado por praticar!");
+                Console.WriteLine("Pressione Enter para sair...");
+                Console.ReadLine();
             }
         }
     }
 }
-
