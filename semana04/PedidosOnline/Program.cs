@@ -1,148 +1,84 @@
 using System;
 using System.Collections.Generic;
 
-class Produto
+namespace VideosYouTube
 {
-    private string nome;
-    private string idProduto;
-    private double precoUnitario;
-    private int quantidade;
-
-    public Produto(string nome, string idProduto, double precoUnitario, int quantidade)
+    class Comentario
     {
-        this.nome = nome;
-        this.idProduto = idProduto;
-        this.precoUnitario = precoUnitario;
-        this.quantidade = quantidade;
-    }
+        public string Autor { get; }
+        public string Texto { get; }
 
-    public string GetNome() => nome;
-    public string GetIdProduto() => idProduto;
-    public double GetPrecoUnitario() => precoUnitario;
-    public int GetQuantidade() => quantidade;
-
-    public double CalcularCustoTotal()
-    {
-        return precoUnitario * quantidade;
-    }
-}
-
-class Endereco
-{
-    private string rua;
-    private string cidade;
-    private string estado;
-    private string pais;
-
-    public Endereco(string rua, string cidade, string estado, string pais)
-    {
-        this.rua = rua;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.pais = pais;
-    }
-
-    public bool EhNosEUA()
-    {
-        return pais.ToUpper() == "EUA";
-    }
-
-    public string GetEnderecoCompleto()
-    {
-        return $"{rua}\n{cidade}, {estado}\n{pais}";
-    }
-}
-
-class Cliente
-{
-    private string nome;
-    private Endereco endereco;
-
-    public Cliente(string nome, Endereco endereco)
-    {
-        this.nome = nome;
-        this.endereco = endereco;
-    }
-
-    public string GetNome() => nome;
-    public Endereco GetEndereco() => endereco;
-
-    public bool MoraNosEUA()
-    {
-        return endereco.EhNosEUA();
-    }
-}
-
-class Pedido
-{
-    private List<Produto> produtos = new List<Produto>();
-    private Cliente cliente;
-
-    public Pedido(Cliente cliente)
-    {
-        this.cliente = cliente;
-    }
-
-    public void AdicionarProduto(Produto produto)
-    {
-        produtos.Add(produto);
-    }
-
-    public double CalcularPrecoTotal()
-    {
-        double total = 0;
-        foreach (Produto p in produtos)
+        public Comentario(string autor, string texto)
         {
-            total += p.CalcularCustoTotal();
+            Autor = autor;
+            Texto = texto;
+        }
+    }
+
+    class Video
+    {
+        public string Titulo { get; }
+        public string Autor { get; }
+        public int Duracao { get; }
+        private List<Comentario> comentarios;
+
+        public Video(string titulo, string autor, int duracao)
+        {
+            Titulo = titulo;
+            Autor = autor;
+            Duracao = duracao;
+            comentarios = new List<Comentario>();
         }
 
-        // custo de envio
-        total += cliente.MoraNosEUA() ? 5 : 35;
-        return total;
-    }
-
-    public string GetEtiquetaEmbalagem()
-    {
-        string etiqueta = "Etiqueta de Embalagem:\n";
-        foreach (Produto p in produtos)
+        public void AdicionarComentario(Comentario comentario)
         {
-            etiqueta += $"{p.GetNome()} (ID: {p.GetIdProduto()})\n";
+            comentarios.Add(comentario);
         }
-        return etiqueta;
-    }
 
-    public string GetEtiquetaEnvio()
-    {
-        return $"Etiqueta de Envio:\n{cliente.GetNome()}\n{cliente.GetEndereco().GetEnderecoCompleto()}";
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        // Cliente nos EUA
-        Endereco endereco1 = new Endereco("123 Main St", "New York", "NY", "EUA");
-        Cliente cliente1 = new Cliente("John Doe", endereco1);
-        Pedido pedido1 = new Pedido(cliente1);
-        pedido1.AdicionarProduto(new Produto("Mouse", "P001", 20.0, 2));
-        pedido1.AdicionarProduto(new Produto("Teclado", "P002", 50.0, 1));
-
-        // Cliente fora dos EUA
-        Endereco endereco2 = new Endereco("Av. Brasil, 456", "São Paulo", "SP", "Brasil");
-        Cliente cliente2 = new Cliente("Maria Silva", endereco2);
-        Pedido pedido2 = new Pedido(cliente2);
-        pedido2.AdicionarProduto(new Produto("Monitor", "P003", 800.0, 1));
-        pedido2.AdicionarProduto(new Produto("Headset", "P004", 200.0, 2));
-
-        // Exibir resultados
-        List<Pedido> pedidos = new List<Pedido> { pedido1, pedido2 };
-
-        foreach (Pedido p in pedidos)
+        public void ExibirInformacoes()
         {
-            Console.WriteLine(p.GetEtiquetaEmbalagem());
-            Console.WriteLine(p.GetEtiquetaEnvio());
-            Console.WriteLine($"Preço Total: ${p.CalcularPrecoTotal()}\n");
+            Console.WriteLine($"Título: {Titulo}");
+            Console.WriteLine($"Autor: {Autor}");
+            Console.WriteLine($"Duração: {Duracao} segundos");
+            Console.WriteLine($"Quantidade de comentários: {comentarios.Count}");
+
+            foreach (Comentario comentario in comentarios)
+            {
+                Console.WriteLine($"- {comentario.Autor}: {comentario.Texto}");
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Criando vídeos
+            Video video1 = new Video("Aprendendo C#", "Fabio Dev", 600);
+            video1.AdicionarComentario(new Comentario("Maria", "Ótima explicação!"));
+            video1.AdicionarComentario(new Comentario("João", "Muito útil, obrigado."));
+            video1.AdicionarComentario(new Comentario("Ana", "Gostei bastante do exemplo."));
+
+            Video video2 = new Video("Receita de Bolo", "Cozinha Fácil", 510);
+            video2.AdicionarComentario(new Comentario("Carlos", "Fiz e deu super certo!"));
+            video2.AdicionarComentario(new Comentario("Fernanda", "Delicioso, recomendo."));
+            video2.AdicionarComentario(new Comentario("Paulo", "Vou tentar no fim de semana."));
+
+            Video video3 = new Video("Treino em Casa", "Fitness Brasil", 900);
+            video3.AdicionarComentario(new Comentario("Luiza", "Excelente treino!"));
+            video3.AdicionarComentario(new Comentario("Ricardo", "Suando muito aqui!"));
+            video3.AdicionarComentario(new Comentario("Beatriz", "Adorei, fácil de seguir."));
+
+            // Lista de vídeos
+            List<Video> listaVideos = new List<Video> { video1, video2, video3 };
+
+            // Exibindo informações
+            foreach (Video v in listaVideos)
+            {
+                v.ExibirInformacoes();
+            }
         }
     }
 }
