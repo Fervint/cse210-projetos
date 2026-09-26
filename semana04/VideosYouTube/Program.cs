@@ -62,7 +62,7 @@ class Program
         video1.AdicionarComentario(new Comentario("João", "Muito útil, obrigado."));
         video1.AdicionarComentario(new Comentario("Ana", "Gostei bastante do exemplo."));
 
-        Video video2 = new Video("Receita de Bolo", "Cozinha Fácil", 420);
+        Video video2 = new Video("Receita de Bolo", "Cozinha Fácil", 510);
         video2.AdicionarComentario(new Comentario("Carlos", "Fiz e deu super certo!"));
         video2.AdicionarComentario(new Comentario("Fernanda", "Delicioso, recomendo."));
         video2.AdicionarComentario(new Comentario("Paulo", "Vou tentar no fim de semana."));
