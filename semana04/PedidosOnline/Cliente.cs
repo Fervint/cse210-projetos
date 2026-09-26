@@ -13,18 +13,6 @@ namespace PedidosOnline
             _endereco = endereco;
         }
 
-        public string Nome
-        {
-            get => _nome;
-            set => _nome = value;
-        }
-
-        public Endereco Endereco
-        {
-            get => _endereco;
-            set => _endereco = value;
-        }
-
         public string GetNome() => _nome;
         public void SetNome(string nome) => _nome = nome;
 

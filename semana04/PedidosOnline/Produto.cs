@@ -6,26 +6,32 @@ namespace PedidosOnline
     {
         private string _nome;
         private string _idProduto;
-        private double _preco;
+        private double _precoUnitario;
         private int _quantidade;
 
-        public Produto(string nome, string codigo, double preco, int quantidade)
+        public Produto(string nome, string idProduto, double precoUnitario, int quantidade)
         {
             _nome = nome;
-            _idProduto = codigo;
-            _preco = preco;
+            _idProduto = idProduto;
+            _precoUnitario = precoUnitario;
             _quantidade = quantidade;
         }
 
-        public string Nome => _nome;
-        public string Codigo => _idProduto;
-        public double Preco => _preco;
-        public int Quantidade => _quantidade;
-
-        public double CalcularCustoTotal() => _preco * _quantidade;
         public string GetNome() => _nome;
+        public void SetNome(string nome) => _nome = nome;
+
         public string GetIdProduto() => _idProduto;
-        public double GetPreco() => _preco;
+        public void SetIdProduto(string idProduto) => _idProduto = idProduto;
+
+        public double GetPrecoUnitario() => _precoUnitario;
+        public void SetPrecoUnitario(double precoUnitario) => _precoUnitario = precoUnitario;
+
         public int GetQuantidade() => _quantidade;
+        public void SetQuantidade(int quantidade) => _quantidade = quantidade;
+
+        public double CalcularCustoTotal()
+        {
+            return _precoUnitario * _quantidade;
+        }
     }
 }
