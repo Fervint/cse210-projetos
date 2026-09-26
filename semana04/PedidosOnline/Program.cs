@@ -1,53 +1,48 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace VideosYouTube
+namespace PedidosOnline
 {
-    class Comentario
+    public class PedidoProgram
     {
-        public string Autor { get; }
-        public string Texto { get; }
+        private readonly List<Produto> produtos;
+        public Cliente Cliente { get; }
 
-        public Comentario(string autor, string texto)
+        public PedidoProgram(Cliente cliente)
         {
-            Autor = autor;
-            Texto = texto;
-        }
-    }
-
-    class Video
-    {
-        public string Titulo { get; }
-        public string Autor { get; }
-        public int Duracao { get; }
-        private List<Comentario> comentarios;
-
-        public Video(string titulo, string autor, int duracao)
-        {
-            Titulo = titulo;
-            Autor = autor;
-            Duracao = duracao;
-            comentarios = new List<Comentario>();
+            Cliente = cliente;
+            produtos = new List<Produto>();
         }
 
-        public void AdicionarComentario(Comentario comentario)
+        public void AdicionarProduto(Produto produto)
         {
-            comentarios.Add(comentario);
+            produtos.Add(produto);
         }
 
-        public void ExibirInformacoes()
+        public double CalcularPrecoTotal()
         {
-            Console.WriteLine($"Título: {Titulo}");
-            Console.WriteLine($"Autor: {Autor}");
-            Console.WriteLine($"Duração: {Duracao} segundos");
-            Console.WriteLine($"Quantidade de comentários: {comentarios.Count}");
+            return produtos.Sum(p => p.Preco * p.Quantidade);
+        }
 
-            foreach (Comentario comentario in comentarios)
+        public string GetEtiquetaEmbalagem()
+        {
+            string etiqueta = "Etiqueta de Embalagem:\n";
+            etiqueta += $"Cliente: {Cliente.Nome}\n";
+            etiqueta += $"Endereço: {Cliente.Endereco}\n";
+            etiqueta += "Produtos:\n";
+
+            foreach (var produto in produtos)
             {
-                Console.WriteLine($"- {comentario.Autor}: {comentario.Texto}");
+                etiqueta += $"- {produto.Nome} ({produto.Codigo}) x{produto.Quantidade}\n";
             }
 
-            Console.WriteLine();
+            return etiqueta;
+        }
+
+        public string GetEtiquetaEnvio()
+        {
+            return $"Etiqueta de Envio:\nCliente: {Cliente.Nome}\nEndereço: {Cliente.Endereco}\n";
         }
     }
 
@@ -55,29 +50,25 @@ namespace VideosYouTube
     {
         static void Main(string[] args)
         {
-            // Criando vídeos
-            Video video1 = new Video("Aprendendo C#", "Fabio Dev", 600);
-            video1.AdicionarComentario(new Comentario("Maria", "Ótima explicação!"));
-            video1.AdicionarComentario(new Comentario("João", "Muito útil, obrigado."));
-            video1.AdicionarComentario(new Comentario("Ana", "Gostei bastante do exemplo."));
+            Endereco endereco1 = new Endereco("123 Main St", "New York", "NY", "EUA");
+            Cliente cliente1 = new Cliente("John Doe", endereco1);
+            PedidoProgram pedido1 = new PedidoProgram(cliente1);
+            pedido1.AdicionarProduto(new Produto("Mouse", "P001", 20.0, 2));
+            pedido1.AdicionarProduto(new Produto("Teclado", "P002", 50.0, 1));
 
-            Video video2 = new Video("Receita de Bolo", "Cozinha Fácil", 510);
-            video2.AdicionarComentario(new Comentario("Carlos", "Fiz e deu super certo!"));
-            video2.AdicionarComentario(new Comentario("Fernanda", "Delicioso, recomendo."));
-            video2.AdicionarComentario(new Comentario("Paulo", "Vou tentar no fim de semana."));
+            Endereco endereco2 = new Endereco("Av. Brasil, 456", "São Paulo", "SP", "Brasil");
+            Cliente cliente2 = new Cliente("Maria Silva", endereco2);
+            PedidoProgram pedido2 = new PedidoProgram(cliente2);
+            pedido2.AdicionarProduto(new Produto("Monitor", "P003", 800.0, 1));
+            pedido2.AdicionarProduto(new Produto("Headset", "P004", 200.0, 2));
 
-            Video video3 = new Video("Treino em Casa", "Fitness Brasil", 900);
-            video3.AdicionarComentario(new Comentario("Luiza", "Excelente treino!"));
-            video3.AdicionarComentario(new Comentario("Ricardo", "Suando muito aqui!"));
-            video3.AdicionarComentario(new Comentario("Beatriz", "Adorei, fácil de seguir."));
+            List<PedidoProgram> pedidos = new List<PedidoProgram> { pedido1, pedido2 };
 
-            // Lista de vídeos
-            List<Video> listaVideos = new List<Video> { video1, video2, video3 };
-
-            // Exibindo informações
-            foreach (Video v in listaVideos)
+            foreach (PedidoProgram p in pedidos)
             {
-                v.ExibirInformacoes();
+                Console.WriteLine(p.GetEtiquetaEmbalagem());
+                Console.WriteLine(p.GetEtiquetaEnvio());
+                Console.WriteLine($"Preço Total: ${p.CalcularPrecoTotal()}\n");
             }
         }
     }
