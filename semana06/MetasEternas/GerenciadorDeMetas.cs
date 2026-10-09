@@ -187,6 +187,8 @@ public class GerenciadorDeMetas
     public void SalvarMetas()
     {
         using StreamWriter escritor = new StreamWriter(ArquivoMetas);
+        escritor.WriteLine($"Pontuacao|{_pontos}");
+
         foreach (Meta meta in _metas)
         {
             escritor.WriteLine(meta.ObterRepresentacaoEmTexto());
@@ -212,6 +214,12 @@ public class GerenciadorDeMetas
         {
             if (string.IsNullOrWhiteSpace(linha))
             {
+                continue;
+            }
+
+            if (linha.StartsWith("Pontuacao|"))
+            {
+                _pontos = int.Parse(linha.Split('|')[1]);
                 continue;
             }
 

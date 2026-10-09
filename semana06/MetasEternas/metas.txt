@@ -1,0 +1,2 @@
+Pontuacao|0
+Simples|Estudar C#|Revisar o material da semana|10|false
